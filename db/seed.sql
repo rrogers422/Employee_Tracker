@@ -1,6 +1,5 @@
--- seed file used to fill out tables prior to queries
 USE employee_db;
-​
+
 INSERT INTO department_table(id, department_name)
 VALUES
 (001, "Sales"),
@@ -8,7 +7,7 @@ VALUES
 (003, "Engineering"),
 (004, "Finance"),
 (005, "Legal");
-​
+
 INSERT INTO role_table(id, title, salary, department_id)
 VALUES
 (41, "Salesperson", 40000, 001),
@@ -21,7 +20,7 @@ VALUES
 (72, "Accountant", 55000, 004),
 (81, "Senior Corporate Counsel", 110000, 005),
 (82, "Laywer", 45000, 005);
-​
+
 INSERT INTO employee_table(id, first_name, last_name, role_id, manager_id)
 VALUES
 (4408, "Lynette", "Price", 41, NULL),
