@@ -53,7 +53,7 @@ inquirer.prompt([
                 value:'update_departments'
             },
             {
-                name: 'update employee',
+                name: 'update role',
                 value:'update_role'
             },
         ]
@@ -71,6 +71,24 @@ inquirer.prompt([
             break;
         case 'view_department':
             viewDepartment();
+            break;
+        case 'add_departments':
+            addDepartment();
+            break;
+        case 'add_role':
+            addRole();
+             break;
+        case 'add_employee':
+            addEmployee();
+             break;
+        case 'update_employee':
+            addEmployee();
+            break;
+        case 'update_departments':
+            updateDepartment();
+            break;
+        case 'update_Role':
+            updateRole();
             break;
     }
 });
