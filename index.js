@@ -1,4 +1,5 @@
 cont inquirer = require("inquirer");
+const inquirer = require("inquirer");
 const mysql = require("mysql");
 const {rootCertificates } = require("node:tls");
 
@@ -12,7 +13,7 @@ const connection = mysql.createConnection({
 
 // function add
 
-const addUpdateprompt = [
+const addUpdatePrompt = [
     {
         typle: "list",
         name: "addUpdate",
@@ -25,3 +26,23 @@ const addUpdateprompt = [
         ]
     }
 ]
+
+const addUpdateAnswer = () => {
+    inquirer.prompt(addUpdatePrompt)
+    .then((answer) => {
+        switch (answer.options) {
+            case "view":
+                viewQuestions();
+                break;
+            case "update":
+                updateQuestions();
+                break;
+            case "add to":
+                addToQuestions();
+                break;
+            case "delete":
+                deleteQuestions();
+                break;
+        }
+    })
+}
