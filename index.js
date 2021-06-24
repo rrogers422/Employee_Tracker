@@ -1,3 +1,7 @@
+cont inquirer = require("inquirer");
+const mysql = require("mysql");
+const {rootCertificates } = require("node:tls");
+
 const connection = mysql.createConnection({
     host: 'localhost',
     port: 3306,
@@ -6,4 +10,4 @@ const connection = mysql.createConnection({
     database: 'employee_db',
 });
 
-function add
+// function add
