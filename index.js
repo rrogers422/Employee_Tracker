@@ -1,5 +1,4 @@
 const inquirer = require("inquirer");
-const inquirer = require("inquirer");
 const mysql = require("mysql");
 const {rootCertificates } = require("node:tls");
 
@@ -13,39 +12,49 @@ const connection = mysql.createConnection({
 
 // function to add/update/view/or delete prompt
 
-const addUpdateViewDeletePrompt = [
+const menuPrompt = [
     {
         typle: "list",
         name: "addUpdateDelete",
         message: "Would you like to view, update , add to, or delete from the employee database?",
         choices: [
-            "view",
-            "update",
-            "add to",
-            "delete",
-            "exit"
+            "view all employees",
+            "view all departments",
+            "view all roles",
+            "add employee",
+            "add department",
+            "add employee role",
+            "update employee role",        
+             "exit"
         ]
     }
 ]
 //results
-const addUpdateDeleteAnswer = () => {
-    inquirer.prompt(addUpdateViewDeletePrompt)
+const mainMenu = () => {
+    inquirer.prompt(menuPrompt)
     .then((answer) => {
         switch (answer.addDeleteUpdate) {
-            case "view":
-                viewQuestions();
+            case "view all employees":
+                viewAllEmployees();
                 break;
-            case "update":
-                updateQuestions();
+            case "view all roles":
+                viewAllRoles();
                 break;
-            case "add to":
-                addToQuestions();
+            case "add employee":
+                addEmployee();
                 break;
-            case "delete":
-                deleteQuestions();
+            case "add department":
+                addDepartment();
+                break;
+            case "add employee role":
+                addEmployeeRole();
+                break;
+            case "update employee":
+                updateEmployee();
                 break;
             case "exit":
                 exit();
+                break;
         }
     })
 }
@@ -97,155 +106,153 @@ function viewQuestions() {
 
 }
 
-viewDepartment();
 
-viewEmployeeByRole();
-
-viewEmployeeList();
-
-viewEmployeeManager();
-
-viewDepartmentBudget();
-
-
-const QuestionsPrompt = [
-    {
-        type: "list",
-        name: "QuestionsAnswer",
-        message: "update an employee role or employee manager?",
-        choices: [
-            "Update Employee Roles",
-            "Update Employee Managers"
-        ]
-    }
-]
-
-
-
-function updateQuestions() {
-    inquirer.prompt(QuestionsPrompt)
-    .then((answer) => {
-        switch (answer.QuestionsAnswer) {
-            case "Update Employee Role":
-                updateEmployeeRole();
-                break;
-            case "Update Employee Manager":
-                updateEmployeeManager();
-                break;
-        }
+// viewAllEmployees 
+const viewEmployees = () => {
+    const query = "SELECT * FROM employee_table;";
+    connection.query(query, (err, results) => {
+        if(err) throw err;
+        console.table(results);
+        mainMenu();
     })
-}
+};
 
-updateEmployeeRole();
-
-updateEmployeeManager();
-
-
-
-const addQuestionPrompt = [
-    {
-        type: "list",
-        name: "addQuestionsAnswer",
-        message: "Would you like to view the departments, employee roles, a list of employees, employees by manager, or a department budget?",
-        choices: [
-            "Add Departments",
-            "Add Employee Roles",
-            "Add Employees",
-            "Return to Main Menu",
-            "Exit"
-        ]
-    }
-]
-
-function addQuestions() {
-    inquirer.prompt(addQuestionPrompt)
-    .then((answer) => {
-        switch (answer.addQuestionsAnswer) {
-            case "Add Departments":
-                addDepartment();
-                break;
-            case "Add Employee Roles":
-                addEmployeeRoles();
-                break;
-            case "Add Employees":
-                addEmployees();
-                break;
-            case "Return to main Menu":
-                returnToMainMenu();
-                break;
-            case "Exit":
-                exit();
-                break;
-
-        }
+// viewAllDepartments 
+const viewDepartments = () => {
+    const query = "SELECT * FROM dept_table;";
+    connection.query(query, (err, results) => {
+        if(err) throw err;
+        console.table(results);
+        mainMenu();
     })
-}
+};
 
 
-addDepartment();
-
-addEmployeeRoles();
-
-addEmployees();
-
-
-
-
-
-const deleteQuestionPrompt = [
-    {
-        type: "list",
-        name: "deleteQuestionAnswer",
-        message: "Would you like to view the departments, employee roles, a list of employees, employees by manager, or a department budget?",
-        choices: [
-            "Delete Departments",
-            "Delete Employee Roles",
-            "Delete Employees",
-            "Return to Main Menu",
-            "Exit"
-        ]
-    }
-]
-
-function deleteQuestions() {
-    inquirer.prompt(deleteQuestionPrompt)
-    .then((answer) => {
-        switch (answer.deleteQuestionAnswer) {
-            case "Delete Departments":
-                deleteDepartment();
-                break;
-            case "Delete Employee Roles":
-                deleteEmployeeRoles();
-                break;
-            case "Delete Employees":
-                deleteEmployees();
-                break;
-            case "Return to Main Menue":
-                returnToMainMenu();
-                break;
-            case "Exit":
-                exit();
-                break;
-        }
+// viewAllRoles 
+const viewRoles = () => {
+    const query = "SELECT * FROM role_table;";
+    connection.query(query, (err, results) => {
+        if (err) throw err;
+        console.table(results);
+        mainMenu();
     })
-}
+};
+
+const viewEmployeesByRole = () => {};
+
+const addEmployee = () => {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "first_name",
+            message: "Enter first name: "
+        },
+        {
+            type: "input",
+            name: "last_name",
+            message: "Enter last name: "
+        },
+        {
+            type: "input",
+            name: "role_id",
+            message: "Enter role id: "
+        },
+        {
+            type: "input",
+            name: "manager_id",
+            message: "Enter manager id:"
+        },
+    ])
+    .then((answer) => {
+        connection.query("INSERT into employee_table SET ?", {
+            first_name: answer.first_name,
+            last_name: answer.last_name,
+            role_id: answer.role_id,
+            manager_id: answer.manager_id
+        })
+        console.log("Employee has been added.");
+        viewEmployees();
+        mainMenu();
+    })
+};
+
+// addDepartment works
+const addDepartment = () => {
+    inquirer.prompt ({
+        name: "dept_table",
+        type: "input",
+        message: "Enter new department name: ",
+    })
+    .then((answer) => {
+        const sql = "INSERT INTO dept_table (dept_name) VALUES (?)";
+        connection.query(sql, answer.dept_table, (err, res) => {
+            console.error(err);
+            if (err) throw err;
+            console.log("Department has been added.");
+            mainMenu();
+        });
+    });
+};
+
+// addEmployeeRole works
+const addEmployeeRoles = () => {
+    inquirer.prompt ([
+            {
+                type: "input",
+                name: "title",
+                message: "Enter new employee role: "
+            },
+            {
+                type: "input",
+                name: "salary",
+                message: "Enter salary: "
+            },
+            {
+                type: "input",
+                name: "dept_id",
+                message: "Enter department id: "
+            },
+    ])
+    .then((answer) => {
+        connection.query("INSERT INTO role_table SET ?", {
+            title: answer.title,
+            salary: answer.salary,
+            dept_id: answer.dept_id
+        })
+        console.log("Employee role has been added.")
+        viewRoles();
+        mainMenu();
+    });
+};
 
 
-viewQuestions();
+const updateEmployeeRole = () => {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "employee_id",
+            message: "Enter the employee id: "
+        },
+        {
+            type: "input",
+            name: "role_id",
+            message: "Enter updated role id: "
+        },
+    ])
+    .then ((answer) => {
+        const query = `UPDATE employee_table SET role_id = ${answer.role_id} WHERE employee_id = ${answer.employee_id};`
+        connection.query(query, (err, res) => {
+            console.error(err);
+            if (err) throw err;
+            console.log("Employee role has been update.");
+            mainMenu();
+        });
+    });
+};
 
-updateQuestions();
 
-addQuestions();
+const exit = () => {
+    process.exit(0);
+};
 
-deleteQuestions();
-
-exit();
-
-
-
-
-deleteDepartment();
-
-deleteEmployeeRoles();
-
-deleteEmployees();
+mainMenu();
