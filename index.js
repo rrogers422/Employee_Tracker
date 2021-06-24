@@ -1,6 +1,6 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
-const {rootCertificates } = require("node:tls");
+
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -14,9 +14,9 @@ const connection = mysql.createConnection({
 
 const menuPrompt = [
     {
-        typle: "list",
+        type: "list",
         name: "addUpdateDelete",
-        message: "Would you like to view, update , add to, or delete from the employee database?",
+        message: "select?",
         choices: [
             "view all employees",
             "view all departments",
@@ -35,10 +35,10 @@ const mainMenu = () => {
     .then((answer) => {
         switch (answer.addDeleteUpdate) {
             case "view all employees":
-                viewAllEmployees();
+                viewEmployees();
                 break;
             case "view all roles":
-                viewAllRoles();
+                viewRoles();
                 break;
             case "add employee":
                 addEmployee();
@@ -58,54 +58,6 @@ const mainMenu = () => {
         }
     })
 }
-//view prompts
-const viewQuestionsPrompt = [
-    {
-        type: "list",
-        name: "viewQuestionsAnswer",
-        message: " Would you like to view the department, employee roles, list of employees, employees by manager, or department budget?",
-        choices: [
-            "department",
-            "employee roles",
-            "employee list",
-            "employee by manager",
-            "department budget",
-            "return to main menu",
-            "exit"
-        ]
-    }
-]
-
-function viewQuestions() {
-    inquirer.prompt(viewQuestionsPrompt)
-    .then((answer) => {
-        switch(answer.viewQuestionsAnswer) {
-            case "department":
-                viewDepartment();
-                break;
-            case "employee roles":
-                viewEmployeeByRole();
-                break;
-            case "employee list":
-                viewEmployeeList();
-                break;
-            case "employee by manager":
-                viewEmployeeManager();
-                break;
-            case "department budget":
-                viewDepartmentBudget();
-                break;
-            case "return to main menu":
-                returnToMainMenu();
-                break;
-            case "exit":
-                exit();
-                break;
-        }
-    })
-
-}
-
 
 // viewAllEmployees 
 const viewEmployees = () => {
