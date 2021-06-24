@@ -11,3 +11,17 @@ const connection = mysql.createConnection({
 });
 
 // function add
+
+const addUpdateprompt = [
+    {
+        typle: "list",
+        name: "addUpdate",
+        message: "Would you like to view, update , add to, or delete from the employee database?",
+        choices: [
+            "view",
+            "update",
+            "add to",
+            "delete"
+        ]
+    }
+]
