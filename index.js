@@ -11,9 +11,9 @@ const connection = mysql.createConnection({
     database: 'employee_db',
 });
 
-// function add
+// function to add/update/view/or delete prompt
 
-const addDeletePrompt = [
+const addUpdateViewDeletePrompt = [
     {
         typle: "list",
         name: "addUpdateDelete",
@@ -22,13 +22,14 @@ const addDeletePrompt = [
             "view",
             "update",
             "add to",
-            "delete"
+            "delete",
+            "exit"
         ]
     }
 ]
-
+//results
 const addUpdateDeleteAnswer = () => {
-    inquirer.prompt(addDeletePrompt)
+    inquirer.prompt(addUpdateViewDeletePrompt)
     .then((answer) => {
         switch (answer.addDeleteUpdate) {
             case "view":
@@ -43,10 +44,12 @@ const addUpdateDeleteAnswer = () => {
             case "delete":
                 deleteQuestions();
                 break;
+            case "exit":
+                exit();
         }
     })
 }
-
+//view prompts
 const viewQuestionsPrompt = [
     {
         type: "list",
@@ -57,12 +60,14 @@ const viewQuestionsPrompt = [
             "employee roles",
             "employee list",
             "employee by manager",
-            "department budget"
+            "department budget",
+            "return to main menu",
+            "exit"
         ]
     }
 ]
 
-function viewQuestions = () => {
+function viewQuestions() {
     inquirer.prompt(viewQuestionsPrompt)
     .then((answer) => {
         switch(answer.viewQuestionsAnswer) {
@@ -81,16 +86,33 @@ function viewQuestions = () => {
             case "department budget":
                 viewDepartmentBudget();
                 break;
+            case "return to main menu":
+                returnToMainMenu();
+                break;
+            case "exit":
+                exit();
+                break;
         }
     })
 
 }
 
+viewDepartment();
+
+viewEmployeeByRole();
+
+viewEmployeeList();
+
+viewEmployeeManager();
+
+viewDepartmentBudget();
+
+
 const QuestionsPrompt = [
     {
         type: "list",
         name: "QuestionsAnswer",
-        message: "view the departments, employee roles, a list of employees, employees by manager, or department budget?",
+        message: "update an employee role or employee manager?",
         choices: [
             "Update Employee Roles",
             "Update Employee Managers"
@@ -98,19 +120,27 @@ const QuestionsPrompt = [
     }
 ]
 
-function updateQuestions = () => {
+
+
+function updateQuestions() {
     inquirer.prompt(QuestionsPrompt)
     .then((answer) => {
         switch (answer.QuestionsAnswer) {
             case "Update Employee Role":
-                updateEmployeeRoles();
+                updateEmployeeRole();
                 break;
             case "Update Employee Manager":
-                updateEmployeeManagers();
+                updateEmployeeManager();
                 break;
         }
     })
 }
+
+updateEmployeeRole();
+
+updateEmployeeManager();
+
+
 
 const addQuestionPrompt = [
     {
@@ -121,11 +151,13 @@ const addQuestionPrompt = [
             "Add Departments",
             "Add Employee Roles",
             "Add Employees",
+            "Return to Main Menu",
+            "Exit"
         ]
     }
 ]
 
-function addQuestions = () => {
+function addQuestions() {
     inquirer.prompt(addQuestionPrompt)
     .then((answer) => {
         switch (answer.addQuestionsAnswer) {
@@ -138,9 +170,27 @@ function addQuestions = () => {
             case "Add Employees":
                 addEmployees();
                 break;
+            case "Return to main Menu":
+                returnToMainMenu();
+                break;
+            case "Exit":
+                exit();
+                break;
+
         }
     })
 }
+
+
+addDepartment();
+
+addEmployeeRoles();
+
+addEmployees();
+
+
+
+
 
 const deleteQuestionPrompt = [
     {
@@ -151,11 +201,13 @@ const deleteQuestionPrompt = [
             "Delete Departments",
             "Delete Employee Roles",
             "Delete Employees",
+            "Return to Main Menu",
+            "Exit"
         ]
     }
 ]
 
-function deleteQuestions = () => {
+function deleteQuestions() {
     inquirer.prompt(deleteQuestionPrompt)
     .then((answer) => {
         switch (answer.deleteQuestionAnswer) {
@@ -168,6 +220,32 @@ function deleteQuestions = () => {
             case "Delete Employees":
                 deleteEmployees();
                 break;
+            case "Return to Main Menue":
+                returnToMainMenu();
+                break;
+            case "Exit":
+                exit();
+                break;
         }
     })
 }
+
+
+viewQuestions();
+
+updateQuestions();
+
+addQuestions();
+
+deleteQuestions();
+
+exit();
+
+
+
+
+deleteDepartment();
+
+deleteEmployeeRoles();
+
+deleteEmployees();
